@@ -43,3 +43,16 @@ db_house <- db_house %>%
 
 # Crear un objeto sf a partir del dataframe
 sf_house <- st_as_sf(db_house, coords = c("lon", "lat"), crs = 4326)
+
+# Crear un mapa con ggplot2
+mapa <- ggplot() +
+  geom_sf(data = sf_house, aes(color = price), size = 2) +
+  scale_color_viridis() +
+  theme_minimal() +
+  labs(title = "Mapa de Propiedades", color = "Precio")
+
+# Mostrar el mapa
+mapa
+
+# Guardar el mapa como un archivo PDF
+ggsave("mapa_propiedades.pdf", mapa)
