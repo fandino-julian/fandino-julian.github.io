@@ -13,3 +13,13 @@ p_load(rio, data.table, tidyverse, sf, rvest, ggplot2, viridis, rmarkdown)
 ```
 
 
+```{r, eval=TRUE, echo=TRUE, message=FALSE, results='hide'}
+# Extracción de URLs de la página web
+url <- "https://eduard-martinez.github.io/pset-4.html"
+webpage <- read_html(url)
+url_full <- webpage %>% html_nodes("a") %>% html_attr("href") %>% na.omit() %>% unique()
+
+# Filtrar URLs que contienen la palabra "propiedad"
+url_subset <- url_full[grepl("propiedad", url_full)]
+url_subset
+```
