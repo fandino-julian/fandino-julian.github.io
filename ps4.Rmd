@@ -23,3 +23,11 @@ url_full <- webpage %>% html_nodes("a") %>% html_attr("href") %>% na.omit() %>% 
 url_subset <- url_full[grepl("propiedad", url_full)]
 url_subset
 ```
+
+```{r,eval=TRUE,echo=TRUE,message=FALSE}
+# Extracción de las tablas de las URLs filtradas
+lista_tablas <- lapply(url_subset, function(link) {
+  page <- read_html(link)
+  table <- page %>% html_table(fill = TRUE) %>% .[[1]]
+  return(table)
+})
