@@ -31,3 +31,12 @@ lista_tablas <- lapply(url_subset, function(link) {
   table <- page %>% html_table(fill = TRUE) %>% .[[1]]
   return(table)
 })
+# Combinar las tablas en un solo dataframe
+db_house <- rbindlist(lista_tablas, fill = TRUE)
+colnames(db_house) <- make.names(colnames(db_house), unique = TRUE)
+
+# Mostrar las primeras filas del dataframe
+head(db_house)
+# Convertir las columnas lat y lon a valores numéricos
+db_house <- db_house %>%
+  mutate(lat = as.numeric(lat), lon = as.numeric(lon))
