@@ -1,0 +1,30 @@
+---
+title: "ps4"
+output: html_document
+date: "2024-06-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rio)
+library(data.table)
+library(tidyverse)
+library(sf)
+library(rvest)
+library(ggplot2)
+library(viridis)
+
+```
+
+url <- "https://eduard-martinez.github.io/pset-4.html"
+webpage <- read_html(url)
+url_full <- webpage %>% html_nodes("a") %>% html_attr("href") %>% na.omit() %>% unique()
+url_subset <- url_full[grepl("propiedad", url_full)]
+url_subset
+
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
