@@ -1,0 +1,15 @@
+---
+title: "Problem set 4"
+author: "JULIAN FANDIÑO_202021070"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Configuración del entorno
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(pacman)
+p_load(rio, data.table, tidyverse, sf, rvest, ggplot2, viridis, rmarkdown)
+```
+
+
