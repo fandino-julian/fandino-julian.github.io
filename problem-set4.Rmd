@@ -1,5 +1,5 @@
 ---
-title: "Problem set 4"
+title: "PROBLEM SET 4 "
 author: "JULIAN FANDIÑO_202021070"
 date: "`r Sys.Date()`"
 output: html_document
