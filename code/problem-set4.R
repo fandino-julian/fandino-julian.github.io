@@ -1,46 +1,37 @@
----
-title: "Problem Set 4 "
-author: "JULIAN FANDIÑO_202021070"
-date: "`r Sys.Date()`"
-output: html_document
----
+#ps4
+# Nombre: Julian Fandiño
+# Código: 202021070
+# Versión de R: R.version.string
 
-```{r setup, include=FALSE}
 # Configuración del entorno
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(pacman)
-p_load(rio, data.table, tidyverse, sf, rvest, ggplot2, viridis, rmarkdown, dplyr)
+p_load(rio, data.table, tidyverse, sf, rvest, ggplot2, viridis, rmarkdown)
 
-```
-
-
-```{r, eval=TRUE, echo=TRUE, message=FALSE, results='hide'}
+# 1.1 Extracción de URLs de la página web
 url <- "https://eduard-martinez.github.io/pset-4.html"
 webpage <- read_html(url)
 url_full <- webpage %>% html_nodes("a") %>% html_attr("href") %>% na.omit() %>% unique()
 url_full
-```
 
-```{r, eval=TRUE, echo=TRUE, message=FALSE, results='hide'}
 # 1.2 Filtrar URLs que contienen la palabra "propiedad"
 url_subset <- url_full[grepl("propiedad", url_full)]
 url_subset
-```
 
-```{r,eval=TRUE,echo=TRUE,message=FALSE}
 # 1.3 Extracción de las tablas de las URLs filtradas
 lista_tablas <- lapply(url_subset, function(link) {
   page <- read_html(link)
   table <- page %>% html_table(fill = TRUE) %>% .[[1]]
   return(table)
 })
+
 # 1.4 Combinar las tablas en un solo dataframe
 db_house <- rbindlist(lista_tablas, fill = TRUE)
 colnames(db_house) <- make.names(colnames(db_house), unique = TRUE)
 
-## Mostrar las primeras filas del dataframe
+# Mostrar las primeras filas del dataframe
 head(db_house)
-## Convertir las columnas lat y lon a valores numéricos
+
+# Convertir las columnas lat y lon a valores numéricos
 db_house <- db_house %>%
   mutate(lat = as.numeric(lat), lon = as.numeric(lon))
 
@@ -54,28 +45,28 @@ mapa <- ggplot() +
   theme_minimal() +
   labs(title = "Mapa de Propiedades", color = "Precio")
 
-## Mostrar el mapa
-mapa
+# Mostrar el mapa
+print(mapa)
 
 # Análisis del Mapa de Propiedades
 
-##El mapa de propiedades muestra la distribución espacial de las propiedades extraídas de las diferentes URLs contenidas en la página web especificada. Cada punto en el mapa representa una propiedad, y el color de los puntos indica el precio de la propiedad, utilizando una escala de colores proporcionada por la función `scale_color_viridis`.
+# El mapa de propiedades muestra la distribución espacial de las propiedades extraídas de las diferentes URLs contenidas en la página web especificada. 
+# Cada punto en el mapa representa una propiedad, y el color de los puntos indica el precio de la propiedad, utilizando una escala de colores proporcionada por la función `scale_color_viridis`.
 
-### Observaciones Principales:
+# Observaciones Principales:
 
-##1. **Distribución Geográfica:**
-   #- Los puntos en el mapa están distribuidos en varias ubicaciones, lo que indica que las propiedades cubren una amplia área geográfica. Esto puede ayudar a identificar concentraciones de propiedades en ciertas regiones.
+# 1. Distribución Geográfica:
+# - Los puntos en el mapa están distribuidos en varias ubicaciones, lo que indica que las propiedades cubren una amplia área geográfica. Esto puede ayudar a identificar concentraciones de propiedades en ciertas regiones.
 
-##2. **Variación de Precios:**
-   #- La escala de colores permite observar la variación de precios entre las propiedades. Los colores más claros indican precios más bajos, mientras que los colores más oscuros representan precios más altos.
-   #- Se pueden identificar patrones espaciales en los precios, como áreas donde las propiedades tienden a ser más caras o más baratas.
+# 2. Variación de Precios:
+# - La escala de colores permite observar la variación de precios entre las propiedades. Los colores más claros indican precios más bajos, mientras que los colores más oscuros representan precios más altos.
+# - Se pueden identificar patrones espaciales en los precios, como áreas donde las propiedades tienden a ser más caras o más baratas.
 
-##3. **Identificación de Áreas Clave:**
-  # - Algunas regiones pueden mostrar una alta densidad de propiedades con precios elevados, lo que puede señalar áreas urbanas o barrios exclusivos.
-   #- Por otro lado, áreas con muchos puntos de colores claros pueden indicar zonas más asequibles.
+# 3. Identificación de Áreas Clave:
+# - Algunas regiones pueden mostrar una alta densidad de propiedades con precios elevados, lo que puede señalar áreas urbanas o barrios exclusivos.
+# - Por otro lado, áreas con muchos puntos de colores claros pueden indicar zonas más asequibles.
 
-
-## Guardar el mapa como un archivo PDF
+# Guardar el mapa como un archivo PDF
 ggsave("mapa_propiedades.pdf", mapa)
 
 # Cargar librerías necesarias
@@ -104,4 +95,5 @@ save_url_info <- function(url, file_name) {
 save_url_info(urls[1], "eduard_martinez_pset4_urls.txt")
 save_url_info(urls[2], "fandino_julian_problem_set4_urls.txt")
 
-```
+
+
