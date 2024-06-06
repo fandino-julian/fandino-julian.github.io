@@ -428,7 +428,33 @@ mapa</code></pre>
 
 
 ## Guardar el mapa como un archivo PDF
-ggsave(&quot;mapa_propiedades.pdf&quot;, mapa)</code></pre>
+ggsave(&quot;mapa_propiedades.pdf&quot;, mapa)
+
+# Cargar librerías necesarias
+library(rvest)
+library(dplyr)
+
+# Definir las URLs
+urls &lt;- c(&quot;https://eduard-martinez.github.io/pset-4.html&quot;, 
+          &quot;https://fandino-julian.github.io/problem-set4.html&quot;)
+
+# Función para extraer y guardar información de una URL en un archivo de texto
+save_url_info &lt;- function(url, file_name) {
+  webpage &lt;- read_html(url)
+  
+  # Extraer URLs de la página
+  url_full &lt;- webpage %&gt;% html_nodes(&quot;a&quot;) %&gt;% html_attr(&quot;href&quot;) %&gt;% na.omit() %&gt;% unique()
+  
+  # Filtrar URLs que contienen la palabra &quot;propiedad&quot;
+  url_subset &lt;- url_full[grepl(&quot;propiedad&quot;, url_full)]
+  
+  # Guardar las URLs en un archivo de texto
+  writeLines(url_subset, con = file_name)
+}
+
+# Generar los archivos de texto para cada URL
+save_url_info(urls[1], &quot;eduard_martinez_pset4_urls.txt&quot;)
+save_url_info(urls[2], &quot;fandino_julian_problem_set4_urls.txt&quot;)</code></pre>
 
 
 
